@@ -23,50 +23,6 @@
 #include "stm32f10x.h"
 #include <stdio.h>
 
-#ifdef USE_STM32100B_EVAL
- #include "stm32100b_eval_lcd.h"
-#elif defined USE_STM3210B_EVAL
- #include "stm3210b_eval_lcd.h"
-#elif defined USE_STM3210E_EVAL
- #include "stm3210e_eval_lcd.h" 
-#elif defined USE_STM3210C_EVAL
- #include "stm3210c_eval_lcd.h"
-#elif defined USE_STM32100E_EVAL
- #include "stm32100e_eval_lcd.h"
-#endif
-
-/** @addtogroup STM32F10x_StdPeriph_Template
-  * @{
-  */
-
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-#ifdef USE_STM32100B_EVAL
-  #define MESSAGE1   "STM32 MD Value Line " 
-  #define MESSAGE2   " Device running on  " 
-  #define MESSAGE3   "  STM32100B-EVAL    " 
-#elif defined (USE_STM3210B_EVAL)
-  #define MESSAGE1   "STM32 Medium Density" 
-  #define MESSAGE2   " Device running on  " 
-  #define MESSAGE3   "   STM3210B-EVAL    " 
-#elif defined (STM32F10X_XL) && defined (USE_STM3210E_EVAL)
-  #define MESSAGE1   "  STM32 XL Density  " 
-  #define MESSAGE2   " Device running on  " 
-  #define MESSAGE3   "   STM3210E-EVAL    "
-#elif defined (USE_STM3210E_EVAL)
-  #define MESSAGE1   " STM32 High Density " 
-  #define MESSAGE2   " Device running on  " 
-  #define MESSAGE3   "   STM3210E-EVAL    " 
-#elif defined (USE_STM3210C_EVAL)
-  #define MESSAGE1   " STM32 Connectivity " 
-  #define MESSAGE2   " Line Device running" 
-  #define MESSAGE3   " on STM3210C-EVAL   "
-#elif defined (USE_STM32100E_EVAL)
-  #define MESSAGE1   "STM32 HD Value Line " 
-  #define MESSAGE2   " Device running on  " 
-  #define MESSAGE3   "  STM32100E-EVAL    "   
-#endif
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
  USART_InitTypeDef USART_InitStructure;
@@ -115,20 +71,6 @@ int main(void)
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
 
-  /* Initialize the LCD */
-#ifdef USE_STM32100B_EVAL
-  STM32100B_LCD_Init();
-#elif defined (USE_STM3210B_EVAL)
-  STM3210B_LCD_Init();
-#elif defined (USE_STM3210E_EVAL)
-  STM3210E_LCD_Init();
-#elif defined (USE_STM3210C_EVAL)
-  STM3210C_LCD_Init();
-#elif defined (USE_STM32100E_EVAL)
-  STM32100E_LCD_Init();  
-#endif
-
-
   /* Add your application code here
      */
 
@@ -143,7 +85,6 @@ int main(void)
   * @param  None
   * @retval None
   */
-PUTCHAR_PROTOTYPE{}
 
 #ifdef  USE_FULL_ASSERT
 
