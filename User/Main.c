@@ -21,7 +21,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
-#include "stm32_eval.h"
 #include <stdio.h>
 
 #ifdef USE_STM32100B_EVAL
@@ -99,10 +98,6 @@ int main(void)
 
   /* Initialize LEDs, Key Button, LCD and COM port(USART) available on
      STM3210X-EVAL board ******************************************************/
-  STM_EVAL_LEDInit(LED1);
-  STM_EVAL_LEDInit(LED2);
-  STM_EVAL_LEDInit(LED3);
-  STM_EVAL_LEDInit(LED4);
 
   /* USARTx configured as follow:
         - BaudRate = 115200 baud  
@@ -119,7 +114,6 @@ int main(void)
   USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
-  STM_EVAL_COMInit(COM1, &USART_InitStructure);
 
   /* Initialize the LCD */
 #ifdef USE_STM32100B_EVAL
@@ -134,29 +128,6 @@ int main(void)
   STM32100E_LCD_Init();  
 #endif
 
-  /* Display message on STM3210X-EVAL LCD *************************************/
-  /* Clear the LCD */ 
-  LCD_Clear(LCD_COLOR_WHITE);
-
-  /* Set the LCD Back Color */
-  LCD_SetBackColor(LCD_COLOR_BLUE);
-  /* Set the LCD Text Color */
-  LCD_SetTextColor(LCD_COLOR_WHITE);
-  LCD_DisplayStringLine(LCD_LINE_0, (uint8_t *)MESSAGE1);
-  LCD_DisplayStringLine(LCD_LINE_1, (uint8_t *)MESSAGE2);
-  LCD_DisplayStringLine(LCD_LINE_2, (uint8_t *)MESSAGE3);
-
-  /* Retarget the C library printf function to the USARTx, can be USART1 or USART2
-     depending on the EVAL board you are using ********************************/
-  printf("\n\r %s", MESSAGE1);
-  printf(" %s", MESSAGE2);
-  printf(" %s\n\r", MESSAGE3);
-
-  /* Turn on leds available on STM3210X-EVAL **********************************/
-  STM_EVAL_LEDOn(LED1);
-  STM_EVAL_LEDOn(LED2);
-  STM_EVAL_LEDOn(LED3);
-  STM_EVAL_LEDOn(LED4);
 
   /* Add your application code here
      */
@@ -172,18 +143,7 @@ int main(void)
   * @param  None
   * @retval None
   */
-PUTCHAR_PROTOTYPE
-{
-  /* Place your implementation of fputc here */
-  /* e.g. write a character to the USART */
-  USART_SendData(EVAL_COM1, (uint8_t) ch);
-
-  /* Loop until the end of transmission */
-  while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
-  {}
-
-  return ch;
-}
+PUTCHAR_PROTOTYPE{}
 
 #ifdef  USE_FULL_ASSERT
 
