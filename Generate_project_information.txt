@@ -1,0 +1,7 @@
+Generate_project_information
+
+1) Open Keil > Project > New Project > Enter you project name
+
+2) Manage Run-Timer Environment
+		- CMSIS  = CORE 	+
+		- Device = Stratup 	+
