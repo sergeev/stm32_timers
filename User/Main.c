@@ -21,95 +21,44 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
-#include <stdio.h>
-
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
- USART_InitTypeDef USART_InitStructure;
-
-/* Private function prototypes -----------------------------------------------*/
-#ifdef __GNUC__
-/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
-   set to 'Yes') calls __io_putchar() */
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __GNUC__ */
-
-/* Private functions ---------------------------------------------------------*/
-
-/**
-  * @brief  Main program.
-  * @param  None
-  * @retval None
-  */
-int main(void)
-{
-  /*!< At this stage the microcontroller clock setting is already configured, 
-       this is done through SystemInit() function which is called from startup
-       file (startup_stm32f10x_xx.s) before to branch to application main.
-       To reconfigure the default setting of SystemInit() function, refer to
-       system_stm32f10x.c file
-     */     
-
-  /* Initialize LEDs, Key Button, LCD and COM port(USART) available on
-     STM3210X-EVAL board ******************************************************/
-
-  /* USARTx configured as follow:
-        - BaudRate = 115200 baud  
-        - Word Length = 8 Bits
-        - One Stop Bit
-        - No parity
-        - Hardware flow control disabled (RTS and CTS signals)
-        - Receive and transmit enabled
-  */
-  USART_InitStructure.USART_BaudRate = 115200;
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-  USART_InitStructure.USART_StopBits = USART_StopBits_1;
-  USART_InitStructure.USART_Parity = USART_Parity_No;
-  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-
-
-  /* Add your application code here
-     */
-
-  /* Infinite loop */
-  while (1)
-  {
-  }
-}
-
-/**
-  * @brief  Retargets the C library printf function to the USART.
-  * @param  None
-  * @retval None
-  */
-
-#ifdef  USE_FULL_ASSERT
-
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t* file, uint32_t line)
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_rcc.h"
+#include "stm32f10x_tim.h"
+void Init(void)
 { 
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    GPIO_InitTypeDef GPIO_InitStructure;
+                                                          // Включаем тактирование нужных модулей
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);  // св.диод PA8
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+                                                          // мигалка св.диод PA8 (навешаный на вывод А8 - PA8 + 330 ом)
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure); 
+
+                                                          // настройка таймера Т4
+    TIM_TimeBaseInitTypeDef Timer;
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
+    TIM_TimeBaseStructInit(&Timer);                       // незабываем эту строку для продвинутых таймеров
+
+    Timer.TIM_Prescaler = ((72000000/2)/1000-1);
+    Timer.TIM_Period = 2000;                              // прерывание 1 сек
+    TIM_TimeBaseInit(TIM4, &Timer);                       // незабываем и эту строку
+
+    TIM_ClearFlag(TIM4, TIM_FLAG_Update);
+    TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);            // Настраиваем таймер по (переполнению)
+    TIM_Cmd(TIM4, ENABLE);                                // запуск
+    NVIC_EnableIRQ(TIM4_IRQn);                            // Разрешаем прерывания от ТМ4 
+
 }
-#endif
-
-/**
-  * @}
-  */
-
-
-/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+void TIM4_IRQnHandler(void)
+{                                                         //моргаем светодиодом дабы показать активность таймера
+    GPIOA->ODR^=GPIO_Pin_8;
+    TIM_ClearITPendingBit(TIM4, TIM_IT_Update);           // очищаем прерывания
+}
+int main (void)
+{ Init();                                                 // Настройка всего
+    while(1)
+    { 
+    }
+}

@@ -1,5 +1,5 @@
 Dependencies for Project 'amplified_timer', Target 'Target 1': (DO NOT MODIFY !)
-F (.\User\Main.c)(0x5A9D9D9E)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\..\STM32F10x_StdPeriph_Lib_V3.5.0\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup -I .\Libraries\STM32F10x_StdPeriph_Driver\inc -I .\Libraries\STM32F10x_StdPeriph_Driver\src -I .\Inc-I.\RTE\Device\STM32F103C8-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\User\Main.c)(0x5A9DAB5E)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\..\STM32F10x_StdPeriph_Lib_V3.5.0\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup -I .\Libraries\STM32F10x_StdPeriph_Driver\inc -I .\Libraries\STM32F10x_StdPeriph_Driver\src -I .\Inc-I.\RTE\Device\STM32F103C8-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include\stm32f10x.h)(0x5825A8EC)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm3.h)(0x5898BA0A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588BF3C4)
@@ -30,7 +30,6 @@ I (.\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x4D78AC34)
 I (.\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D78AC34)
 I (.\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x4D78AC34)
 I (.\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D78AC34)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x588BF3C4)
 F (.\Libraries\STM32F10x_StdPeriph_Driver\src\misc.c)(0x5A9DED3E)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\..\STM32F10x_StdPeriph_Lib_V3.5.0\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup -I .\Libraries\STM32F10x_StdPeriph_Driver\inc -I .\Libraries\STM32F10x_StdPeriph_Driver\src -I .\Inc-I.\RTE\Device\STM32F103C8-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\misc.o --omf_browse .\objects\misc.crf --depend .\objects\misc.d)
 I (.\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D78AC34)
 I (C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include\stm32f10x.h)(0x5825A8EC)
