@@ -24,41 +24,82 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_tim.h"
-void Init(void)
-{ 
-    GPIO_InitTypeDef GPIO_InitStructure;
-                                                          // Включаем тактирование нужных модулей
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);  // св.диод PA8
 
-                                                          // мигалка св.диод PA8 (навешаный на вывод А8 - PA8 + 330 ом)
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure); 
+void delay1(void);
+void delay2(void);
+void delay3(void);
 
-                                                          // настройка таймера Т4
-    TIM_TimeBaseInitTypeDef Timer;
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
-    TIM_TimeBaseStructInit(&Timer);                       // незабываем эту строку для продвинутых таймеров
+int main(void)
+{
+SystemInit();
+		SystemCoreClockUpdate();
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
-    Timer.TIM_Prescaler = ((72000000/2)/1000-1);
-    Timer.TIM_Period = 2000;                              // прерывание 1 сек
-    TIM_TimeBaseInit(TIM4, &Timer);                       // незабываем и эту строку
+    GPIO_InitTypeDef gpioInitStruct;
+	
+    GPIO_StructInit(&gpioInitStruct);
+    gpioInitStruct.GPIO_Pin = GPIO_Pin_13;
+    gpioInitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpioInitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOC, &gpioInitStruct);
+	
+    GPIO_StructInit(&gpioInitStruct);
+    gpioInitStruct.GPIO_Pin = GPIO_Pin_14;
+    gpioInitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpioInitStruct.GPIO_Speed = GPIO_Speed_2MHz;
+    GPIO_Init(GPIOC, &gpioInitStruct);
+	
+	  GPIO_StructInit(&gpioInitStruct);
+    gpioInitStruct.GPIO_Pin = GPIO_Pin_15;
+    gpioInitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpioInitStruct.GPIO_Speed = GPIO_Speed_10MHz;
+    GPIO_Init(GPIOC, &gpioInitStruct);
 
-    TIM_ClearFlag(TIM4, TIM_FLAG_Update);
-    TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);            // Настраиваем таймер по (переполнению)
-    TIM_Cmd(TIM4, ENABLE);                                // запуск
-    NVIC_EnableIRQ(TIM4_IRQn);                            // Разрешаем прерывания от ТМ4 
-
-}
-void TIM4_IRQnHandler(void)
-{                                                         //моргаем светодиодом дабы показать активность таймера
-    GPIOA->ODR^=GPIO_Pin_8;
-    TIM_ClearITPendingBit(TIM4, TIM_IT_Update);           // очищаем прерывания
-}
-int main (void)
-{ Init();                                                 // Настройка всего
     while(1)
-    { 
+    {
+   	 //GPIO_WriteBit(GPIOC, GPIO_Pin_13, 0);
+   	 GPIO_SetBits(GPIOC,GPIO_Pin_13);
+   	 delay1();
+   	 //GPIO_WriteBit(GPIOC, GPIO_Pin_13, 1);
+   	 GPIO_ResetBits(GPIOC,GPIO_Pin_13);
+   	 delay1();
+			
+		 //GPIO_WriteBit(GPIOC, GPIO_Pin_14, 0);
+   	 GPIO_SetBits(GPIOC,GPIO_Pin_14);
+   	 delay2();
+   	 //GPIO_WriteBit(GPIOC, GPIO_Pin_14, 1);
+   	 GPIO_ResetBits(GPIOC,GPIO_Pin_14);
+   	 delay2();
+			
+		 //GPIO_WriteBit(GPIOC, GPIO_Pin_15, 0);
+   	 GPIO_SetBits(GPIOC,GPIO_Pin_15);
+   	 delay2();
+   	 //GPIO_WriteBit(GPIOC, GPIO_Pin_15, 1);
+   	 GPIO_ResetBits(GPIOC,GPIO_Pin_15);
+   	 delay2();
     }
+}
+
+void delay1(void)
+{
+	// Red
+  volatile unsigned int i;
+  for(i=0;i<0x640000;i++){
+  }
+}
+
+void delay2(void)
+{
+	// Green
+  volatile unsigned int i;
+  for(i=0;i<0x50000;i++){
+  }
+}
+
+void delay3(void)
+{
+	// Yellow
+  volatile unsigned int i;
+  for(i=0;i<0x320000;i++){
+  }
 }
